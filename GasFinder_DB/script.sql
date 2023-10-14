@@ -171,3 +171,38 @@ WHERE	tlp.fk_id_posto = p.id_posto
 	AND prc.fk_id_tipo_combustivel = tc.id_combustivel	
 	AND p.uf = e.id_estado
 ORDER BY	p.id_posto;
+
+-- =====================================================
+
+-- NOT NULL EM "UF" E "ESTADO" NA TABELA DE ESTADO? 
+
+CREATE TABLE tbl_avaliacao (
+		-- serão double, pois para avaliar serão utilizadas as 5 estrelas
+		av_posto double,
+		qualidade_prod double,
+    qualidade_atendimento double,
+		opiniao varchar (500),
+		fk_id_posto int not null,
+    fk_id_usuario int not null,
+    foreign key(fk_id_posto) references tbl_posto(id_posto),
+    foreign key(fk_id_usuario) references tbl_usuario(id_usuario)
+); 
+
+-- parceiro irá inserir essas informações no seu cadastro
+CREATE TABLE tbl_parceiros (     
+		id_parceiro int primary key auto_increment not null,
+		cnpj varchar(14) not null,
+    nome_parceiro varchar(50) not null, -- filiais terão o nome fantasia em comum
+    ramo varchar(40) not null, -- para poder fazer busca por "mecanica", "borracharia", "auto-eletricas"
+    
+    -- varios endereços para o mesmo CNPJ
+    endereco varchar (65) not null default "",
+		logradouro varchar (65),
+    cep varchar (8) not null,
+		municipio varchar (45) not null,
+		numero int (6),
+		bairro varchar (50),
+		complemento  varchar (125),
+    uf int not null,
+    foreign key(uf) references tbl_estado(id_estado)
+);
